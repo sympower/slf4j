@@ -12,3 +12,5 @@ If you are interested in improving SLF4J, great! The SLF4J community looks forwa
 3. Make your changes on the branch you hopefuly created in Step 2. Be sure that your code passes existing unit tests. Please add unit tests for your work if appropriate. It usually is.
 4. Push your changes to your fork/branch in github. Don't push it to your master! If you do it will make it harder to submit new changes later.
 5. Submit a pull request to SLF4J from from your commit page on github.
+
+# dummy comment
