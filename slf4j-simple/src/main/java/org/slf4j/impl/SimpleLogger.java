@@ -126,7 +126,7 @@ public class SimpleLogger extends MarkerIgnoringBase {
     private static SimpleLogListener PRE_LOG_LISTENER = null;
     private static SimpleLogListener LOG_LISTENER = null;
 
-    private static int DEFAULT_LOG_LEVEL = LOG_LEVEL_INFO;
+    private static volatile int DEFAULT_LOG_LEVEL = LOG_LEVEL_INFO;
     private static boolean SHOW_DATE_TIME = false;
     //private static String DATE_TIME_FORMAT_STR = null;
     private static SimpleMicroDateFormat DATE_FORMATTER = SimpleMicroDateFormat.FULL;
@@ -209,8 +209,15 @@ public class SimpleLogger extends MarkerIgnoringBase {
         return new SimpleLogListenerImpl(stream, stackTracePrinter, timeAdjuster, SHOW_DATE_TIME, DATE_FORMATTER, START_TIME, SHOW_THREAD_NAME, LEVEL_IN_BRACKETS, WARN_LEVEL_STRING);
     }
 
+    public static void updateConfig(Hashtable config) {
+        synchronized(SIMPLE_LOGGER_PROPS) {
+            initConfig(config);
+        }
+        reinitializeOldLoggerLevels();
+    }
+
     private static void initConfig(Hashtable config) {
-        SIMPLE_LOGGER_PROPS = config;
+        overwriteHashtable(config, SIMPLE_LOGGER_PROPS);
 
         String defaultLogLevelString = getStringProperty(DEFAULT_LOG_LEVEL_KEY, null);
         if (defaultLogLevelString != null)
@@ -225,6 +232,16 @@ public class SimpleLogger extends MarkerIgnoringBase {
         WARN_LEVEL_STRING = getStringProperty(WARN_LEVEL_STRING_KEY, WARN_LEVEL_STRING);
 
         LOG_FILE = getStringProperty(LOG_FILE_KEY, LOG_FILE);
+    }
+
+    private static void overwriteHashtable(Hashtable source, Hashtable destination) {
+        destination.clear();
+
+        Enumeration enumeration = source.keys();
+        while (enumeration.hasMoreElements()) {
+            Object key = enumeration.nextElement();
+            destination.put(key, source.get(key));
+        }
     }
 
     private static void reinitializeOldLoggerLevels() {
