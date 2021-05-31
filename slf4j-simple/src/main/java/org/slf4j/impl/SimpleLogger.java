@@ -255,7 +255,7 @@ public class SimpleLogger extends MarkerIgnoringBase {
     }
 
     /** The current log level */
-    protected int currentLogLevel = LOG_LEVEL_INFO;
+    protected volatile int currentLogLevel = LOG_LEVEL_INFO;
     /** The short name of this simple log instance */
     private transient String shortLogName = null;
 
