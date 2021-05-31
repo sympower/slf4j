@@ -114,7 +114,7 @@ public class SimpleLogger extends MarkerIgnoringBase {
     private static final long serialVersionUID = -632788891211436180L;
 
     private static long START_TIME = System.currentTimeMillis();
-    static Hashtable SIMPLE_LOGGER_PROPS = new Hashtable();
+    static final Hashtable SIMPLE_LOGGER_PROPS = new Hashtable();
 
     private static final int LOG_LEVEL_TRACE = LocationAwareLogger.TRACE_INT;
     private static final int LOG_LEVEL_DEBUG = LocationAwareLogger.DEBUG_INT;
@@ -217,7 +217,7 @@ public class SimpleLogger extends MarkerIgnoringBase {
     }
 
     private static void initConfig(Hashtable config) {
-        overwriteHashtable(config, SIMPLE_LOGGER_PROPS);
+        replaceHashtableContents(config, SIMPLE_LOGGER_PROPS);
 
         String defaultLogLevelString = getStringProperty(DEFAULT_LOG_LEVEL_KEY, null);
         if (defaultLogLevelString != null)
@@ -234,7 +234,7 @@ public class SimpleLogger extends MarkerIgnoringBase {
         LOG_FILE = getStringProperty(LOG_FILE_KEY, LOG_FILE);
     }
 
-    private static void overwriteHashtable(Hashtable source, Hashtable destination) {
+    private static void replaceHashtableContents(Hashtable source, Hashtable destination) {
         destination.clear();
 
         Enumeration enumeration = source.keys();
