@@ -210,14 +210,14 @@ public class SimpleLogger extends MarkerIgnoringBase {
     }
 
     public static void updateConfig(Hashtable config) {
-        synchronized(SIMPLE_LOGGER_PROPS) {
-            initConfig(config);
-        }
+        initConfig(config);
         reinitializeOldLoggerLevels();
     }
 
     private static void initConfig(Hashtable config) {
-        replaceHashtableContents(config, SIMPLE_LOGGER_PROPS);
+        synchronized(SIMPLE_LOGGER_PROPS) {
+            replaceHashtableContents(config, SIMPLE_LOGGER_PROPS);
+        }
 
         String defaultLogLevelString = getStringProperty(DEFAULT_LOG_LEVEL_KEY, null);
         if (defaultLogLevelString != null)
